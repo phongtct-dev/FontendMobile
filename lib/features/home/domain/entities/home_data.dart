@@ -38,7 +38,8 @@ class HomeStateData with _$HomeStateData {
   const factory HomeStateData({
     required List<BannerEntity> banners,
     required List<CategoryEntity> categories,
-    required List<ProductEntity> newArrivals,
-    required List<ProductEntity> bestSellers,
+    required List<ProductEntity> flashSales, // THÊM MỚI: Giá sốc
+    required List<ProductEntity> bestSellers, // Bán chạy
+    required List<ProductEntity> newArrivals, // Mới nhất
   }) = _HomeStateData;
 }

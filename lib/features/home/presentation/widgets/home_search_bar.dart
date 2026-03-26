@@ -46,7 +46,7 @@ class HomeSearchBar extends ConsumerWidget { // ĐỔI SANG ConsumerWidget
               height: 40,
               child: TextField(
                 readOnly: true,
-                onTap: () => context.push('/search'),
+                onTap: () => context.go(AppRoutes.shop),
                 decoration: InputDecoration(
                   hintText: "Tìm kiếm...",
                   prefixIcon: Icon(Icons.search, size: 20, color: theme.iconTheme.color),

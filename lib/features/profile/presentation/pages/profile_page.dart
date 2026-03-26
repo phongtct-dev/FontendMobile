@@ -80,7 +80,19 @@ class ProfilePage extends ConsumerWidget {
                 }),
                 const SizedBox(height: 16),
 
-                // 3. SETTINGS GROUP
+                //Thong tin
+                _buildMenuBtn(context, "Chính sách bảo hành", Icons.security, colorScheme, onTap: () {
+                  context.push(AppRoutes.warranty);
+                }),
+                const SizedBox(height: 16),
+
+                //5 LIEN HE
+                _buildMenuBtn(context, "Liên hệ shop", Icons.support_agent, colorScheme, onTap: () {
+                  context.push(AppRoutes.contact);
+                }),
+                const SizedBox(height: 16),
+
+                // 6. SETTINGS GROUP
                 Container(
                   decoration: BoxDecoration(
                     color: colorScheme.surface,

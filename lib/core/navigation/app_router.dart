@@ -14,8 +14,10 @@ import '../../features/cart/presentation/pages/order_success_page.dart';
 import '../../features/cart/presentation/pages/orders_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/home/presentation/pages/main_wrapper.dart';
+import '../../features/profile/presentation/pages/contact_shop_page.dart';
 import '../../features/profile/presentation/pages/profile_page.dart';
 import '../../features/profile/presentation/pages/update_profile_page.dart';
+import '../../features/profile/presentation/pages/warranty_policy_page.dart';
 import '../../features/shop/presentation/pages/product_detail_page.dart';
 import '../../features/shop/presentation/pages/shop_page.dart';
 
@@ -42,6 +44,12 @@ class AppRoutes {
   // chi tiết
   static const String productDetail = '/product-detail';
   static const String orderDetail = '/order-detail';
+
+
+  // trong profile
+
+  static const String warranty = '/warranty';
+  static const String contact = '/contact';
 }
 
 @riverpod
@@ -153,6 +161,14 @@ GoRouter router(RouterRef ref) {
               GoRoute(
                   path: AppRoutes.profile,
                   builder: (context, state) => const ProfilePage()
+              ),
+              GoRoute(
+                path: AppRoutes.warranty,
+                builder: (context, state) => const WarrantyPolicyPage(),
+              ),
+              GoRoute(
+                path: AppRoutes.contact,
+                builder: (context, state) => const ContactShopPage(),
               ),
             ],
           ),

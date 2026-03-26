@@ -515,8 +515,11 @@ abstract class _CategoryEntity implements CategoryEntity {
 mixin _$HomeStateData {
   List<BannerEntity> get banners => throw _privateConstructorUsedError;
   List<CategoryEntity> get categories => throw _privateConstructorUsedError;
+  List<ProductEntity> get flashSales =>
+      throw _privateConstructorUsedError; // THÊM MỚI: Giá sốc
+  List<ProductEntity> get bestSellers =>
+      throw _privateConstructorUsedError; // Bán chạy
   List<ProductEntity> get newArrivals => throw _privateConstructorUsedError;
-  List<ProductEntity> get bestSellers => throw _privateConstructorUsedError;
 
   /// Create a copy of HomeStateData
   /// with the given fields replaced by the non-null parameter values.
@@ -535,8 +538,9 @@ abstract class $HomeStateDataCopyWith<$Res> {
   $Res call({
     List<BannerEntity> banners,
     List<CategoryEntity> categories,
-    List<ProductEntity> newArrivals,
+    List<ProductEntity> flashSales,
     List<ProductEntity> bestSellers,
+    List<ProductEntity> newArrivals,
   });
 }
 
@@ -557,8 +561,9 @@ class _$HomeStateDataCopyWithImpl<$Res, $Val extends HomeStateData>
   $Res call({
     Object? banners = null,
     Object? categories = null,
-    Object? newArrivals = null,
+    Object? flashSales = null,
     Object? bestSellers = null,
+    Object? newArrivals = null,
   }) {
     return _then(
       _value.copyWith(
@@ -570,13 +575,17 @@ class _$HomeStateDataCopyWithImpl<$Res, $Val extends HomeStateData>
                 ? _value.categories
                 : categories // ignore: cast_nullable_to_non_nullable
                       as List<CategoryEntity>,
-            newArrivals: null == newArrivals
-                ? _value.newArrivals
-                : newArrivals // ignore: cast_nullable_to_non_nullable
+            flashSales: null == flashSales
+                ? _value.flashSales
+                : flashSales // ignore: cast_nullable_to_non_nullable
                       as List<ProductEntity>,
             bestSellers: null == bestSellers
                 ? _value.bestSellers
                 : bestSellers // ignore: cast_nullable_to_non_nullable
+                      as List<ProductEntity>,
+            newArrivals: null == newArrivals
+                ? _value.newArrivals
+                : newArrivals // ignore: cast_nullable_to_non_nullable
                       as List<ProductEntity>,
           )
           as $Val,
@@ -596,8 +605,9 @@ abstract class _$$HomeStateDataImplCopyWith<$Res>
   $Res call({
     List<BannerEntity> banners,
     List<CategoryEntity> categories,
-    List<ProductEntity> newArrivals,
+    List<ProductEntity> flashSales,
     List<ProductEntity> bestSellers,
+    List<ProductEntity> newArrivals,
   });
 }
 
@@ -617,8 +627,9 @@ class __$$HomeStateDataImplCopyWithImpl<$Res>
   $Res call({
     Object? banners = null,
     Object? categories = null,
-    Object? newArrivals = null,
+    Object? flashSales = null,
     Object? bestSellers = null,
+    Object? newArrivals = null,
   }) {
     return _then(
       _$HomeStateDataImpl(
@@ -630,13 +641,17 @@ class __$$HomeStateDataImplCopyWithImpl<$Res>
             ? _value._categories
             : categories // ignore: cast_nullable_to_non_nullable
                   as List<CategoryEntity>,
-        newArrivals: null == newArrivals
-            ? _value._newArrivals
-            : newArrivals // ignore: cast_nullable_to_non_nullable
+        flashSales: null == flashSales
+            ? _value._flashSales
+            : flashSales // ignore: cast_nullable_to_non_nullable
                   as List<ProductEntity>,
         bestSellers: null == bestSellers
             ? _value._bestSellers
             : bestSellers // ignore: cast_nullable_to_non_nullable
+                  as List<ProductEntity>,
+        newArrivals: null == newArrivals
+            ? _value._newArrivals
+            : newArrivals // ignore: cast_nullable_to_non_nullable
                   as List<ProductEntity>,
       ),
     );
@@ -649,12 +664,14 @@ class _$HomeStateDataImpl implements _HomeStateData {
   const _$HomeStateDataImpl({
     required final List<BannerEntity> banners,
     required final List<CategoryEntity> categories,
-    required final List<ProductEntity> newArrivals,
+    required final List<ProductEntity> flashSales,
     required final List<ProductEntity> bestSellers,
+    required final List<ProductEntity> newArrivals,
   }) : _banners = banners,
        _categories = categories,
-       _newArrivals = newArrivals,
-       _bestSellers = bestSellers;
+       _flashSales = flashSales,
+       _bestSellers = bestSellers,
+       _newArrivals = newArrivals;
 
   final List<BannerEntity> _banners;
   @override
@@ -672,15 +689,17 @@ class _$HomeStateDataImpl implements _HomeStateData {
     return EqualUnmodifiableListView(_categories);
   }
 
-  final List<ProductEntity> _newArrivals;
+  final List<ProductEntity> _flashSales;
   @override
-  List<ProductEntity> get newArrivals {
-    if (_newArrivals is EqualUnmodifiableListView) return _newArrivals;
+  List<ProductEntity> get flashSales {
+    if (_flashSales is EqualUnmodifiableListView) return _flashSales;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_newArrivals);
+    return EqualUnmodifiableListView(_flashSales);
   }
 
+  // THÊM MỚI: Giá sốc
   final List<ProductEntity> _bestSellers;
+  // THÊM MỚI: Giá sốc
   @override
   List<ProductEntity> get bestSellers {
     if (_bestSellers is EqualUnmodifiableListView) return _bestSellers;
@@ -688,9 +707,19 @@ class _$HomeStateDataImpl implements _HomeStateData {
     return EqualUnmodifiableListView(_bestSellers);
   }
 
+  // Bán chạy
+  final List<ProductEntity> _newArrivals;
+  // Bán chạy
+  @override
+  List<ProductEntity> get newArrivals {
+    if (_newArrivals is EqualUnmodifiableListView) return _newArrivals;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_newArrivals);
+  }
+
   @override
   String toString() {
-    return 'HomeStateData(banners: $banners, categories: $categories, newArrivals: $newArrivals, bestSellers: $bestSellers)';
+    return 'HomeStateData(banners: $banners, categories: $categories, flashSales: $flashSales, bestSellers: $bestSellers, newArrivals: $newArrivals)';
   }
 
   @override
@@ -704,12 +733,16 @@ class _$HomeStateDataImpl implements _HomeStateData {
               _categories,
             ) &&
             const DeepCollectionEquality().equals(
-              other._newArrivals,
-              _newArrivals,
+              other._flashSales,
+              _flashSales,
             ) &&
             const DeepCollectionEquality().equals(
               other._bestSellers,
               _bestSellers,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._newArrivals,
+              _newArrivals,
             ));
   }
 
@@ -718,8 +751,9 @@ class _$HomeStateDataImpl implements _HomeStateData {
     runtimeType,
     const DeepCollectionEquality().hash(_banners),
     const DeepCollectionEquality().hash(_categories),
-    const DeepCollectionEquality().hash(_newArrivals),
+    const DeepCollectionEquality().hash(_flashSales),
     const DeepCollectionEquality().hash(_bestSellers),
+    const DeepCollectionEquality().hash(_newArrivals),
   );
 
   /// Create a copy of HomeStateData
@@ -735,8 +769,9 @@ abstract class _HomeStateData implements HomeStateData {
   const factory _HomeStateData({
     required final List<BannerEntity> banners,
     required final List<CategoryEntity> categories,
-    required final List<ProductEntity> newArrivals,
+    required final List<ProductEntity> flashSales,
     required final List<ProductEntity> bestSellers,
+    required final List<ProductEntity> newArrivals,
   }) = _$HomeStateDataImpl;
 
   @override
@@ -744,9 +779,11 @@ abstract class _HomeStateData implements HomeStateData {
   @override
   List<CategoryEntity> get categories;
   @override
-  List<ProductEntity> get newArrivals;
+  List<ProductEntity> get flashSales; // THÊM MỚI: Giá sốc
   @override
-  List<ProductEntity> get bestSellers;
+  List<ProductEntity> get bestSellers; // Bán chạy
+  @override
+  List<ProductEntity> get newArrivals;
 
   /// Create a copy of HomeStateData
   /// with the given fields replaced by the non-null parameter values.

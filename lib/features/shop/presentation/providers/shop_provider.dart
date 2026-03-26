@@ -1,9 +1,17 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../domain/models/product_filter.dart';
 import '../../../product/domain/entities/product.dart';
 import '../../../home/data/repositories/home_repository_impl.dart';
 
+
+
+
 part 'shop_provider.g.dart';
+
+
+
+final filterSheetTriggerProvider = StateProvider<bool>((ref) => false);
 
 @riverpod
 class ShopProductNotifier extends _$ShopProductNotifier {

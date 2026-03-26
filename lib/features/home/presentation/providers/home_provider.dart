@@ -14,18 +14,20 @@ class HomeNotifier extends _$HomeNotifier {
   FutureOr<HomeStateData> build() async {
     final repo = ref.watch(homeRepositoryProvider);
 
-    // Gọi API song song
+    // Gọi 4 API song song để tối ưu tốc độ
     final results = await Future.wait([
       repo.fetchCategories(),
-      repo.fetchHomeProducts(sort: '-createdAt'),
-      repo.fetchHomeProducts(sort: '-sold'),
+      repo.fetchHomeProducts(queryParameters: {'isPromotion': 'true'}, limit: 10), // 1. Giá sốc
+      repo.fetchHomeProducts(sort: '-sold', limit: 10),                            // 2. Bán chạy
+      repo.fetchHomeProducts(sort: '-createdAt', limit: 10),                       // 3. Mới nhất
     ]);
 
     return HomeStateData(
       banners: _hardcodedBanners,
       categories: results[0] as List<CategoryEntity>,
-      newArrivals: results[1] as List<ProductEntity>,
+      flashSales: results[1] as List<ProductEntity>,
       bestSellers: results[2] as List<ProductEntity>,
+      newArrivals: results[3] as List<ProductEntity>,
     );
   }
 
