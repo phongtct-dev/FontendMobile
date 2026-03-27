@@ -1,8 +1,10 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'; // THÊM IMPORT NÀY
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 // Import các page
+import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/verify_otp_page.dart';
@@ -28,6 +30,7 @@ class AppRoutes {
   static const String login = '/login';
   static const String signup = '/signup';
   static const String verify = '/signup/verify';
+  static const String forgotPassword = '/forgot-password';
 
   // trang chinh
   static const String home = '/';
@@ -45,21 +48,31 @@ class AppRoutes {
   static const String productDetail = '/product-detail';
   static const String orderDetail = '/order-detail';
 
-
   // trong profile
-
   static const String warranty = '/warranty';
   static const String contact = '/contact';
 }
 
+// TẠO CLASS NÀY ĐỂ LẮNG NGHE TRẠNG THÁI MÀ KHÔNG LÀM SẬP GOROUTER
+class RouterNotifier extends ChangeNotifier {
+  RouterNotifier(this.ref) {
+    ref.listen(authStateProvider, (_, __) => notifyListeners());
+  }
+  final Ref ref;
+}
+
 @riverpod
 GoRouter router(RouterRef ref) {
-  final authState = ref.watch(authStateProvider);
+  final notifier = RouterNotifier(ref);
 
   return GoRouter(
     initialLocation: AppRoutes.home,
     debugLogDiagnostics: true,
+    refreshListenable: notifier, // Gắn Notifier vào đây để load lại route mượt mà
     redirect: (context, state) {
+      // BẮT BUỘC DÙNG ref.read() TẠI ĐÂY THAY VÌ ref.watch()
+      final authState = ref.read(authStateProvider);
+
       if (authState.isLoading) return null;
 
       final bool isLoggedIn = authState.valueOrNull != null;
@@ -68,7 +81,8 @@ GoRouter router(RouterRef ref) {
       final bool isPublicRoute =
           location == AppRoutes.login ||
               location == AppRoutes.signup ||
-              location == AppRoutes.verify;
+              location == AppRoutes.verify ||
+              location == AppRoutes.forgotPassword;
 
       if (!isLoggedIn && !isPublicRoute) return AppRoutes.login;
       if (isLoggedIn && isPublicRoute) return AppRoutes.home;
@@ -80,6 +94,10 @@ GoRouter router(RouterRef ref) {
       GoRoute(
         path: AppRoutes.login,
         builder: (context, state) => const LoginPage(),
+      ),
+      GoRoute(
+        path: AppRoutes.forgotPassword,
+        builder: (context, state) => const ForgotPasswordPage(),
       ),
       GoRoute(
         path: AppRoutes.signup,

@@ -14,25 +14,46 @@ class AuthState extends _$AuthState {
   }
 
   Future<void> login(String email, String password) async {
-    state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
+    state = const AsyncLoading(); // Hiển thị vòng quay loading
+
+    try {
       final repo = ref.read(authRepositoryProvider);
-      return await repo.login(email, password);
-    });
+      final user = await repo.login(email, password);
+      state = AsyncData(user); // Đăng nhập thành công!
+
+    } on DioException catch (e) {
+      // 1. GHI ĐÈ CÂU LỖI MẶC ĐỊNH THÀNH CÂU CỦA BẠN (Bỏ chữ lỗi máy chủ)
+      String errorMessage = "Tài khoản hoặc mật khẩu của bạn không đúng! mời nhập lại!";
+
+      // 2. Tùy chọn: Nếu backend trả về lỗi đặc biệt khác (vd: "Tài khoản bị khóa" hay "Chưa xác thực")
+      // thì ta mới ưu tiên hiển thị. Còn lỗi sai pass/user mặc định bị ghi đè.
+      if (e.response?.data != null && e.response?.data is Map) {
+        String backendMsg = e.response!.data['message'] ?? "";
+
+        // Nếu backend báo lỗi không phải là sai pass/user, ta giữ lại thông báo đó
+        if (backendMsg.isNotEmpty &&
+            !backendMsg.contains("Thong tin dang nhap") &&
+            !backendMsg.contains("User khong ton tai")) {
+          errorMessage = backendMsg;
+        }
+      }
+
+      state = AsyncError(errorMessage, StackTrace.current); // Ném lỗi ra cho UI
+
+    } catch (e) {
+      // Bắt các lỗi vặt khác (ví dụ sập mạng hoàn toàn) cũng gom chung về câu này
+      state = AsyncError("Tài khoản hoặc mật khẩu của bạn không đúng! mời nhập lại!", StackTrace.current);
+    }
   }
 
-  // --- HÀM ĐĂNG XUẤT CHUẨN KIẾN TRÚC CỦA BẠN ---
+  // --- HÀM ĐĂNG XUẤT ---
   Future<void> logout() async {
     try {
-      // 1. Báo cho Backend biết là user đăng xuất (Xóa cookie phía server)
       await ref.read(dioProvider).post('/auth/sign-out');
     } catch (e) {
-      print("Lỗi API đăng xuất, nhưng vẫn tiếp tục xóa local: $e");
+      print("Lỗi API đăng xuất: $e");
     } finally {
-      // 2. Gọi hàm logout trong AuthRepositoryImpl của bạn (chứa lệnh _storage.clearAll())
       await ref.read(authRepositoryProvider).logout();
-
-      // 3. Xóa state để GoRouter tự động đẩy văng ra màn hình Login
       state = const AsyncData(null);
     }
   }
@@ -45,9 +66,8 @@ class AuthState extends _$AuthState {
         'newPassword': newPassword,
       });
     } on DioException catch (e) {
-      String errorMessage = "Lỗi đổi mật khẩu";
+      String errorMessage = "Tài khoản hoặc mật khẩu của bạn không đúng! mời nhập lại!";
       if (e.response?.data != null && e.response?.data is Map) {
-        // Bắt chính xác câu chữ lỗi từ Backend (ví dụ: "Mat khau cu cua ban khong chinh xac")
         errorMessage = e.response!.data['message'] ?? errorMessage;
       }
       throw Exception(errorMessage);

@@ -16,7 +16,7 @@ class StorageService {
   }
 
   Future<String?> getAccessToken() => _storage.read(key: _accessTokenKey);
-
+  Future<String?> getRefreshToken() => _storage.read(key: _refreshTokenKey);
   Future<void> clearAll() => _storage.deleteAll();
 }
 
