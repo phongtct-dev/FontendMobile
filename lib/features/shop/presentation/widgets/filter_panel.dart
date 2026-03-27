@@ -31,17 +31,24 @@ class _FilterPanelState extends ConsumerState<FilterPanel> {
 
   @override
   Widget build(BuildContext context) {
-    // Lấy danh sách Categories từ HomeProvider (Đã load sẵn ở trang chủ)
+    // Lấy theme để tự động đổi màu theo Light/Dark mode
+    final theme = Theme.of(context);
+
+    // Lấy danh sách Categories từ HomeProvider
     final homeState = ref.watch(homeNotifierProvider);
     final categories = homeState.valueOrNull?.categories ?? [];
 
     return Container(
-      // NỚI RỘNG PADDING TRÊN (top lên 24) để tránh đụng đầu
+      // THÊM MÀU NỀN VÀ BO GÓC TẠI ĐÂY
+      decoration: BoxDecoration(
+        color: theme.colorScheme.surface, // Trắng ở Light mode, Xám đen ở Dark mode
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       padding: const EdgeInsets.fromLTRB(20, 24, 20, 20),
       height: MediaQuery.of(context).size.height * 0.85,
       child: Column(
         children: [
-          // 1. THANH KÉO (DRAG HANDLE) TẠO CẢM GIÁC VUỐT MƯỢT
+          // 1. THANH KÉO (DRAG HANDLE)
           Center(
             child: Container(
               width: 50,
@@ -131,14 +138,14 @@ class _FilterPanelState extends ConsumerState<FilterPanel> {
                   title: const Text("Sản phẩm đang giảm giá"),
                   value: tempFilter.isOnSale ?? false,
                   onChanged: (val) => setState(() => tempFilter.isOnSale = val),
-                  activeColor: Theme.of(context).primaryColor,
+                  activeColor: theme.colorScheme.primary,
                 ),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,
                   title: const Text("Sản phẩm còn hàng"),
                   value: tempFilter.inStock ?? false,
                   onChanged: (val) => setState(() => tempFilter.inStock = val),
-                  activeColor: Theme.of(context).primaryColor,
+                  activeColor: theme.colorScheme.primary,
                 ),
               ],
             ),
@@ -167,7 +174,7 @@ class _FilterPanelState extends ConsumerState<FilterPanel> {
               Expanded(
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Theme.of(context).primaryColor,
+                    backgroundColor: theme.colorScheme.primary,
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

@@ -76,6 +76,27 @@ class HomeRepository {
     final List list = response.data['data'];
     return list.map((e) => ReviewEntity.fromJson(e)).toList();
   }
+
+
+  Future<void> createReview(String productId, int rating, String reviewText) async {
+    try {
+      await _dio.post('/review', data: {
+        'productId': productId,
+        'rating': rating,
+        'review': reviewText,
+      });
+    } on DioException catch (e) {
+      // Bắt chính xác lỗi từ Backend (vd: "Bạn đã đánh giá rồi", "Chưa mua hàng")
+      String errorMessage = "Lỗi khi gửi đánh giá";
+      if (e.response?.data != null && e.response?.data is Map) {
+        errorMessage = e.response!.data['message'] ?? errorMessage;
+      }
+      throw Exception(errorMessage);
+    }
+  }
+
+
+
 }
 
 @riverpod
